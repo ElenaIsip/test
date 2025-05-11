@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/material_dynamic_neutral30"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+
+    <!-- Заголовок и кнопка закрытия -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="24dp">
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Покупка билетов"
+            android:textColor="@color/white"
+            android:textSize="34sp"
+            android:gravity="center"/>
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="53dp"
+            android:layout_height="53dp"
+            android:backgroundTint="#1DDA0C"
+            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"/>
+    </LinearLayout>
+
+
+    <!-- Города -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="16dp">
+
+        <!-- Сначала "Откуда" -->
+        <AutoCompleteTextView
+            android:id="@+id/fromCity"
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:background="@color/white"
+            android:hint="Откуда"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Затем "Куда" -->
+        <AutoCompleteTextView
+            android:id="@+id/toCity"
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:hint="Куда"
+            android:background="@color/white"/>
+
+    </LinearLayout>
+
+    <!-- Даты -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="24dp">
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Дата"
+            android:textColor="#1DDA0C"
+            android:textSize="24sp"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editTextDate2"
+                android:layout_width="0dp"
+                android:layout_height="46dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/white"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="Туда"
+                android:inputType="number"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white" />
+
+            <EditText
+                android:id="@+id/editTextDate3"
+                android:layout_width="0dp"
+                android:layout_height="46dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="number"
+                android:backgroundTint="@color/white"
+                android:hint="Назад"
+                android:gravity="center"
+                android:textColorHint="@color/white" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Предложения -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="16dp">
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Предложения"
+            android:textColor="#1DDA0C"
+            android:textSize="24sp"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"/>
+
+        <ListView
+            android:id="@+id/ticketsListView"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:layout_marginTop="8dp"
+            android:divider="@android:color/background_light"
+            android:dividerHeight="1dp"
+            android:scrollbars="vertical" />
+    </LinearLayout>
+
+    <!-- Количество и сумма -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp">
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Количество людей"
+            android:textColor="@color/white"/>
+
+        <EditText
+            android:id="@+id/editTextNumber"
+            android:layout_width="80dp"
+            android:layout_height="25dp"
+            android:inputType="number"
+            android:background="@color/white"/>
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Сумма"
+            android:textColor="@color/white"/>
+
+        <TextView
+            android:id="@+id/textView14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/white"
+            android:layout_marginEnd="8dp"/>
+
+
+
+    </LinearLayout>
+
+    <!-- Цена и кнопка -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="24dp">
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Цена"
+            android:textColor="@color/white"/>
+
+        <TextView
+            android:id="@+id/tvPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/white"
+            android:layout_marginEnd="8dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="руб"
+            android:textColor="@color/white"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buyButton"
+        android:layout_width="158dp"
+        android:layout_height="64dp"
+        android:layout_gravity="center"
+        android:backgroundTint="#1DDA0C"
+        android:text="Купить" />
+</LinearLayout>

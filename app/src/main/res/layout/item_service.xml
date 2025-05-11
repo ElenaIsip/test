@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/material_dynamic_neutral30">
+
+    <ImageView
+        android:id="@+id/avat"
+        android:layout_width="78dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/avat" />
+
+    <EditText
+        android:id="@+id/searchEditText"
+        android:layout_width="297dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="28dp"
+        android:background="@android:drawable/alert_light_frame"
+        android:hint="Поиск сервисов..."
+        android:inputType="text"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/avat"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="375dp"
+        android:layout_height="124dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchEditText"
+        app:srcCompat="@drawable/scale" />
+
+
+    <LinearLayout
+        android:id="@+id/servicesContainer"
+        android:layout_width="match_parent"
+        android:layout_height="510dp"
+        android:layout_marginTop="51dp"
+        android:orientation="horizontal"
+        android:background="@drawable/rounded_top_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3">
+
+        <!-- Левая колонка -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/serviceTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Мои сервисы"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:ignore="DuplicateIds" />
+
+            <!-- Расходы -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+
+                <ImageButton
+                    android:id="@+id/btnExpenses"
+                    android:layout_width="140dp"
+                    android:layout_height="49dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:srcCompat="@drawable/sale"
+                    tools:layout_editor_absoluteY="21dp"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:id="@+id/txtExpenses"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Мои расходы"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toEndOf="@id/btnExpenses"
+                    app:layout_constraintTop_toTopOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Чеки -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp">
+
+                <ImageButton
+                    android:id="@+id/btnReceipts"
+                    android:layout_width="135dp"
+                    android:layout_height="51dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:srcCompat="@drawable/check"
+                    tools:layout_editor_absoluteY="23dp"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:id="@+id/txtReceipts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Мои чеки"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toEndOf="@id/btnReceipts"
+                    app:layout_constraintTop_toTopOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Покупка билетов -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp">
+
+                <ImageButton
+                    android:id="@+id/btnBuyTickets"
+                    android:layout_width="130dp"
+                    android:layout_height="56dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:srcCompat="@drawable/ticket"
+                    tools:layout_editor_absoluteY="20dp"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:id="@+id/txtBuyTickets"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Покупка билетов"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toEndOf="@id/btnBuyTickets"
+                    app:layout_constraintTop_toTopOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+        <!-- Правая колонка -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/service"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Мои сервисы"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:ignore="DuplicateIds" />
+
+            <!-- Билеты -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="157dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+
+                <ImageButton
+                    android:id="@+id/btnTickets"
+                    android:layout_width="143dp"
+                    android:layout_height="53dp"
+                    android:layout_marginStart="4dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:srcCompat="@drawable/tik"
+                    tools:ignore="MissingConstraints"
+                    tools:layout_editor_absoluteY="16dp" />
+
+                <TextView
+                    android:id="@+id/txtTickets"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Мои билеты"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toEndOf="@id/btnTickets"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Проездные -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="163dp"
+                android:layout_height="75dp"
+                android:layout_marginTop="24dp">
+
+                <ImageButton
+                    android:id="@+id/btnPasses"
+                    android:layout_width="134dp"
+                    android:layout_height="50dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:srcCompat="@drawable/proez"
+                    tools:ignore="MissingConstraints"
+                    tools:layout_editor_absoluteY="21dp" />
+
+                <TextView
+                    android:id="@+id/txtPasses"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Мои проездные"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toEndOf="@id/btnPasses"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Льготы -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="164dp"
+                android:layout_height="76dp"
+                android:layout_marginTop="24dp">
+
+                <ImageButton
+                    android:id="@+id/btnBenefits"
+                    android:layout_width="133dp"
+                    android:layout_height="49dp"
+                    android:layout_marginStart="4dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:srcCompat="@drawable/log"
+                    tools:layout_editor_absoluteY="21dp" />
+
+                <TextView
+                    android:id="@+id/txtBenefits"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Мои льготы"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toEndOf="@id/btnBenefits"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
