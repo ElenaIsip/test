@@ -12,6 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Travel"
         tools:targetApi="31">
+        <activity android:name=".ExpensesActivity"/>
+        <activity android:name=".ReceiptsActivity"/>
         <activity android:name=".BuyTicketsActivity" />
         <activity android:name=".TicketDetailsActivity" />
         <activity android:name=".BenefitsActivity"

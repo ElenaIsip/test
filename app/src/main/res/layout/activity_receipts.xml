@@ -1,73 +1,119 @@
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/material_dynamic_neutral30"
-    android:orientation="vertical"
-    android:padding="16dp">
-
+    android:background="@color/material_dynamic_neutral30">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tvTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Мои чеки"
-            android:textColor="@color/white"
-            android:textSize="34sp"/>
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="start|center_vertical"
+            android:textColor="@android:color/white"/> <!-- Белый цвет текста -->
 
         <ImageButton
-            android:id="@+id/btnClose"
+            android:id="@+id/imageButton"
             android:layout_width="53dp"
             android:layout_height="53dp"
             android:backgroundTint="#1DDA0C"
-            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"/>
+            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+
     </LinearLayout>
 
+    <!-- Основной контент -->
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="24dp">
+    <ScrollView
+        android:layout_width="412dp"
+        android:layout_height="631dp"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageButton"
+        app:layout_constraintVertical_bias="0.943"
+        tools:ignore="NotSibling"
+        tools:layout_editor_absoluteX="0dp">
 
-        <TextView
-            android:id="@+id/tvBank"
-            android:layout_width="wrap_content"
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:layout_marginBottom="8dp"/>
+            android:divider="@android:drawable/divider_horizontal_dark"
+            android:orientation="vertical"
+            android:showDividers="middle">
 
-        <TextView
-            android:id="@+id/tvAmount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:layout_marginBottom="8dp"/>
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="350dp"
+                android:layout_height="189dp"
+                app:srcCompat="@drawable/image"
+                tools:layout_editor_absoluteX="3dp"
+                tools:layout_editor_absoluteY="178dp" />
 
-        <TextView
-            android:id="@+id/tvVAT"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:layout_marginBottom="8dp"/>
 
-        <TextView
-            android:id="@+id/tvDateTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:textSize="18sp"/>
-    </LinearLayout>
+            <!-- Все TextView с белым текстом -->
+            <TextView
+                android:id="@+id/tvTrainNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
 
-</LinearLayout>
+            <TextView
+                android:id="@+id/tvPaymentTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tvBankName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tvBankDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tvCustomerDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tvOrderStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

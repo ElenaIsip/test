@@ -105,24 +105,25 @@ class BuyTicketsActivity : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
-
         buyButton.setOnClickListener {
-            selectedTicket?.let {
+            selectedTicket?.let { ticket ->
                 val passengers = editTextNumber.text.toString().toIntOrNull() ?: 0
                 if (passengers > 0) {
-                    showTicketDetails(passengers)
+                    val totalPrice = ticket.price * passengers
+                    showTicketDetails(passengers, totalPrice)
                 } else {
                     Toast.makeText(this, "Введите количество пассажиров", Toast.LENGTH_SHORT).show()
                 }
             } ?: run {
                 Toast.makeText(this, "Выберите билет из списка", Toast.LENGTH_SHORT).show()
             }
-
         }
+
         findViewById<ImageButton>(R.id.imageButton).setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
+
     }
 
     private fun updateTicketsList() {
@@ -149,12 +150,15 @@ class BuyTicketsActivity : AppCompatActivity() {
     }
 
 
-    private fun showTicketDetails(passengers: Int) {
+    private fun showTicketDetails(passengers: Int, totalPrice: Int) {
+        val totalPrice = selectedTicket!!.price * passengers
         val intent = Intent(this, TicketDetailsActivity::class.java).apply {
             putExtra("PASSENGERS", passengers)
+            putExtra("TOTAL_PRICE", totalPrice)
         }
         startActivity(intent)
     }
+
 
     private fun setupDateInputs() {
         val dateFormat = "dd.MM.yyyy"

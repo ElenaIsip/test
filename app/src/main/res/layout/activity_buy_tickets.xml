@@ -107,6 +107,7 @@
                 android:backgroundTint="@color/white"
                 android:hint="Назад"
                 android:gravity="center"
+                android:textColor="@color/white"
                 android:textColorHint="@color/white" />
         </LinearLayout>
     </LinearLayout>
