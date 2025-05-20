@@ -1,7 +1,9 @@
 package com.example.travel
 
 import android.annotation.SuppressLint
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.LinearLayout
@@ -15,24 +17,45 @@ class ExpensesActivity : AppCompatActivity() {
 
     private var baseBalance = 500.0
     private var generatedIncomes = 0.0
+    private lateinit var prefs: SharedPreferences
+
+    companion object {
+        private const val PREFS_NAME = "expenses_prefs"
+        private const val KEY_BASE_BALANCE = "base_balance"
+        private const val KEY_GENERATED_INCOMES = "generated_incomes"
+        private const val KEY_FIRST_RUN = "first_run"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_expenses)
 
+        prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
+        checkFirstRun()
+
         findViewById<ImageButton>(R.id.imageButton).setOnClickListener {
+            saveData()
             finish()
         }
 
-        generateUniqueIncomes()
-        setupExpenses()
         updateBalance()
+    }
+
+    private fun checkFirstRun() {
+        if (prefs.getBoolean(KEY_FIRST_RUN, true)) {
+            generateUniqueIncomes()
+            setupExpenses()
+            prefs.edit().putBoolean(KEY_FIRST_RUN, false).apply()
+            saveData()
+        } else {
+            loadData()
+            restoreUI()
+        }
     }
 
     private fun generateUniqueIncomes() {
         val incomesContainer = findViewById<LinearLayout>(R.id.llIncomes)
         incomesContainer.removeAllViews()
-
 
         val incomesCount = Random.nextInt(3, 6)
         val usedAmounts = mutableSetOf<Double>()
@@ -64,9 +87,8 @@ class ExpensesActivity : AppCompatActivity() {
     private fun setupExpenses() {
         val expensesContainer = findViewById<LinearLayout>(R.id.llExpenses)
 
-
         val expenses = listOf(
-            Triple("Поезд РЖД", "Транспорт", 2450.0),
+            Triple("Электричка РЖД", "Транспорт", 2450.0),
             Triple("Покупка белья", "Одежда", 250.0),
             Triple("Обед в кафе", "Еда", 850.0)
         )
@@ -83,6 +105,33 @@ class ExpensesActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
+    private fun restoreUI() {
+        val incomesContainer = findViewById<LinearLayout>(R.id.llIncomes)
+        val expensesContainer = findViewById<LinearLayout>(R.id.llExpenses)
+
+        // Восстановление доходов
+        repeat(prefs.getInt("incomes_count", 0)) { index ->
+            createTransactionItem(
+                container = incomesContainer,
+                category = prefs.getString("income_category_$index", "") ?: "",
+                description = prefs.getString("income_desc_$index", "") ?: "",
+                amount = prefs.getFloat("income_amount_$index", 0f).toDouble(),
+                isIncome = true
+            )
+        }
+
+        // Восстановление расходов
+        repeat(prefs.getInt("expenses_count", 0)) { index ->
+            createTransactionItem(
+                container = expensesContainer,
+                category = prefs.getString("expense_category_$index", "") ?: "",
+                description = prefs.getString("expense_desc_$index", "") ?: "",
+                amount = prefs.getFloat("expense_amount_$index", 0f).toDouble(),
+                isIncome = false
+            )
+        }
+    }
 
     private fun createTransactionItem(
         container: LinearLayout,
@@ -91,7 +140,6 @@ class ExpensesActivity : AppCompatActivity() {
         amount: Double,
         isIncome: Boolean
     ) {
-
         val itemLayout = LinearLayout(this).apply {
             layoutParams = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -103,7 +151,6 @@ class ExpensesActivity : AppCompatActivity() {
             setPadding(16.dpToPx(), 16.dpToPx(), 16.dpToPx(), 16.dpToPx())
         }
 
-
         val textContainer = LinearLayout(this).apply {
             layoutParams = LinearLayout.LayoutParams(
                 0,
@@ -113,41 +160,85 @@ class ExpensesActivity : AppCompatActivity() {
             orientation = LinearLayout.VERTICAL
         }
 
-
         TextView(this).apply {
             text = category
             setTextColor(ContextCompat.getColor(
                 this@ExpensesActivity,
                 if (isIncome) R.color.income_green else R.color.expense_red
             ))
-            textSize = 16f
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
             textContainer.addView(this)
         }
-
 
         TextView(this).apply {
             text = description
             setTextColor(ContextCompat.getColor(this@ExpensesActivity, R.color.white))
-            textSize = 14f
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
             textContainer.addView(this)
         }
 
-
-        val amountView = TextView(this).apply {
+        TextView(this).apply {
             text = "${if (isIncome) "+" else "-"}${amount.toInt()} ₽"
             setTextColor(ContextCompat.getColor(
                 this@ExpensesActivity,
                 if (isIncome) R.color.income_green else R.color.expense_red
             ))
-            textSize = 16f
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
             setPadding(16.dpToPx(), 0, 0, 0)
+        }.also { amountView ->
+            itemLayout.addView(textContainer)
+            itemLayout.addView(amountView)
         }
 
-
-        itemLayout.addView(textContainer)
-        itemLayout.addView(amountView)
-
         container.addView(itemLayout)
+    }
+
+    private fun saveData() {
+        prefs.edit().apply {
+            putFloat(KEY_BASE_BALANCE, baseBalance.toFloat())
+            putFloat(KEY_GENERATED_INCOMES, generatedIncomes.toFloat())
+
+            // Сохранение структуры доходов
+            val incomesContainer = findViewById<LinearLayout>(R.id.llIncomes)
+            putInt("incomes_count", incomesContainer.childCount)
+            for (i in 0 until incomesContainer.childCount) {
+                val item = incomesContainer.getChildAt(i) as LinearLayout
+                val texts = (item.getChildAt(0) as LinearLayout)
+                val categoryView = texts.getChildAt(0) as TextView
+                val descView = texts.getChildAt(1) as TextView
+                val amountView = item.getChildAt(1) as TextView
+
+                putString("income_category_$i", categoryView.text.toString())
+                putString("income_desc_$i", descView.text.toString())
+                putFloat("income_amount_$i", amountView.text
+                    .replace("[^\\d]".toRegex(), "")
+                    .toFloat())
+            }
+
+            // Сохранение структуры расходов
+            val expensesContainer = findViewById<LinearLayout>(R.id.llExpenses)
+            putInt("expenses_count", expensesContainer.childCount)
+            for (i in 0 until expensesContainer.childCount) {
+                val item = expensesContainer.getChildAt(i) as LinearLayout
+                val texts = (item.getChildAt(0) as LinearLayout)
+                val categoryView = texts.getChildAt(0) as TextView
+                val descView = texts.getChildAt(1) as TextView
+                val amountView = item.getChildAt(1) as TextView
+
+                putString("expense_category_$i", categoryView.text.toString())
+                putString("expense_desc_$i", descView.text.toString())
+                putFloat("expense_amount_$i", amountView.text
+                    .replace("[^\\d]".toRegex(), "")
+                    .toFloat())
+            }
+
+            apply()
+        }
+    }
+
+    private fun loadData() {
+        baseBalance = prefs.getFloat(KEY_BASE_BALANCE, 500.0f).toDouble()
+        generatedIncomes = prefs.getFloat(KEY_GENERATED_INCOMES, 0.0f).toDouble()
     }
 
     private fun updateBalance() {
@@ -156,8 +247,16 @@ class ExpensesActivity : AppCompatActivity() {
             "Баланс: ${"%,.0f".format(total).replace(",", " ")} ₽"
     }
 
-    private fun Int.dpToPx(): Int = (this * resources.displayMetrics.density).toInt()
+    override fun onPause() {
+        super.onPause()
+        saveData()
+    }
+
+    private fun Int.dpToPx(): Int = TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP,
+        this.toFloat(),
+        resources.displayMetrics
+    ).toInt()
 
     private fun Double.roundToTen(): Double = (this / 10).roundToInt() * 10.0
 }
-

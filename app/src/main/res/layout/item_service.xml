@@ -31,16 +31,32 @@
         app:layout_constraintStart_toEndOf="@+id/avat"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView3"
+    <FrameLayout
+        android:id="@+id/adContainer"
         android:layout_width="375dp"
         android:layout_height="124dp"
         android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchEditText"
-        app:srcCompat="@drawable/scale" />
+        app:layout_constraintTop_toBottomOf="@+id/searchEditText">
 
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/ad1" />
+
+        <TextView
+            android:id="@+id/tvAdText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:padding="8dp"
+            android:background="#00000000"/>
+
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/servicesContainer"
@@ -52,7 +68,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3">
+        app:layout_constraintTop_toBottomOf="@+id/imageView3"
+        tools:ignore="NotSibling">
 
         <!-- Левая колонка -->
         <LinearLayout
@@ -235,7 +252,8 @@
                     android:layout_marginStart="28dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:srcCompat="@drawable/log"
-                    tools:layout_editor_absoluteY="5dp" />
+                    tools:layout_editor_absoluteY="5dp"
+                    tools:ignore="MissingConstraints" />
 
                 <TextView
                     android:id="@+id/txtBenefits"

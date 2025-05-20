@@ -2,7 +2,9 @@
 
 package com.example.travel
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.TextView
@@ -20,27 +22,84 @@ class TicketDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tickets)
 
-        val passengers = intent.getIntExtra("PASSENGERS", 1)
-
-
         val tvNumber = findViewById<TextView>(R.id.tvTicketNumber)
         val tvPassport = findViewById<TextView>(R.id.tvPassport)
         val btnClose = findViewById<ImageButton>(R.id.imageButton)
         val btnViewReceipts = findViewById<MaterialButton>(R.id.btnViewReceipts)
 
+        // Инициализация SharedPreferences
+        val prefs = getSharedPreferences("TicketPrefs", Context.MODE_PRIVATE)
+        val intentPassengers = intent.getIntExtra("PASSENGERS", -1)
 
-        tvNumber.text = "Билет №${Random.nextInt(1000, 9999)}"
-        tvPassport.text = generatePassportInfo(passengers)
-
-
-        btnClose.setOnClickListener {
-            navigateToMain()
+        if (intentPassengers != -1) {
+            // Сценарий 1: Активность запущена с новыми данными пассажиров
+            handleIntentWithPassengers(prefs, intentPassengers, tvNumber, tvPassport)
+        } else {
+            // Сценарий 2: Активность перезапущена (поворот экрана или повторный вход)
+            handleRestoredData(prefs, tvNumber, tvPassport)
         }
 
-        btnViewReceipts.setOnClickListener {
+        btnClose.setOnClickListener { navigateToMain() }
+        btnViewReceipts.setOnClickListener { showReceipts() }
+    }
 
-            showReceipts()
+    private fun handleIntentWithPassengers(
+        prefs: SharedPreferences,
+        passengers: Int,
+        tvNumber: TextView,
+        tvPassport: TextView
+    ) {
+        val savedPassengers = prefs.getInt("PASSENGERS", -1)
+        val savedTicket = prefs.getString("TICKET_NUMBER", null)
+        val savedPassport = prefs.getString("PASSPORT_INFO", null)
+
+        if (savedPassengers != passengers || savedTicket == null || savedPassport == null) {
+            // Генерация и сохранение новых данных
+            generateAndSaveNewTicket(prefs, passengers, tvNumber, tvPassport)
+        } else {
+            // Использование сохраненных данных
+            tvNumber.text = savedTicket
+            tvPassport.text = savedPassport
         }
+    }
+
+    private fun handleRestoredData(
+        prefs: SharedPreferences,
+        tvNumber: TextView,
+        tvPassport: TextView
+    ) {
+        val savedPassengers = prefs.getInt("PASSENGERS", -1)
+        val savedTicket = prefs.getString("TICKET_NUMBER", null)
+        val savedPassport = prefs.getString("PASSPORT_INFO", null)
+
+        if (savedPassengers != -1 && savedTicket != null && savedPassport != null) {
+            // Восстановление сохраненных данных
+            tvNumber.text = savedTicket
+            tvPassport.text = savedPassport
+        } else {
+            // Резервный сценарий: генерация данных по умолчанию
+            generateAndSaveNewTicket(prefs, 1, tvNumber, tvPassport)
+        }
+    }
+
+    private fun generateAndSaveNewTicket(
+        prefs: SharedPreferences,
+        passengers: Int,
+        tvNumber: TextView,
+        tvPassport: TextView
+    ) {
+        val ticketNumber = "Билет №${Random.nextInt(1000, 9999)}"
+        val passportInfo = generatePassportInfo(passengers)
+
+        prefs.edit().apply {
+            putInt("PASSENGERS", passengers)
+            putString("TICKET_NUMBER", ticketNumber)
+            putString("PASSPORT_INFO", passportInfo)
+            apply()
+        }
+
+        tvNumber.text = ticketNumber
+        tvPassport.text = passportInfo
     }
 
     private fun generatePassportInfo(passengers: Int): String {
@@ -54,9 +113,7 @@ class TicketDetailsActivity : AppCompatActivity() {
     }
 
     private fun showReceipts() {
-
-        val intent = Intent(this, ReceiptsActivity::class.java)
-        startActivity(intent)
+        startActivity(Intent(this, ReceiptsActivity::class.java))
     }
 
     private fun navigateToMain() {

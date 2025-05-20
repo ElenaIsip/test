@@ -1,5 +1,6 @@
 package com.example.travel
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -15,10 +16,21 @@ import kotlin.random.Random
 
 
 class ReceiptsActivity : AppCompatActivity() {
+
+    companion object {
+        private const val PREFS_NAME = "ReceiptsPrefs"
+        private const val KEY_TRAIN_NUMBER = "trainNumber"
+        private const val KEY_PAYMENT_TIME = "paymentTime"
+        private const val KEY_BANK_NAME = "bankName"
+        private const val KEY_BANK_DETAILS = "bankDetails"
+        private const val KEY_CUSTOMER_DETAILS = "customerDetails"
+        private const val KEY_ORDER_STATUS = "orderStatus"
+    }
+
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_receipts)
-
 
         val tvTrainNumber = findViewById<TextView>(R.id.tvTrainNumber)
         val tvPaymentTime = findViewById<TextView>(R.id.tvPaymentTime)
@@ -27,22 +39,42 @@ class ReceiptsActivity : AppCompatActivity() {
         val tvCustomerDetails = findViewById<TextView>(R.id.tvCustomerDetails)
         val tvOrderStatus = findViewById<TextView>(R.id.tvOrderStatus)
 
+        val sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
 
+        if (sharedPreferences.contains(KEY_TRAIN_NUMBER)) {
+            // Load saved data
+            tvTrainNumber.text = "Поезд: ${sharedPreferences.getString(KEY_TRAIN_NUMBER, "")}"
+            tvPaymentTime.text = "Оплата: ${sharedPreferences.getString(KEY_PAYMENT_TIME, "")}"
+            tvBankName.text = "Банк: ${sharedPreferences.getString(KEY_BANK_NAME, "")}"
+            tvBankDetails.text = "Реквизиты: ${sharedPreferences.getString(KEY_BANK_DETAILS, "")}"
+            tvCustomerDetails.text = "Покупатель:\n${sharedPreferences.getString(KEY_CUSTOMER_DETAILS, "")}"
+            tvOrderStatus.text = "Статус: ${sharedPreferences.getString(KEY_ORDER_STATUS, "")}"
+        } else {
+            // Generate and save new data
+            val trainNumber = generateTrainNumber()
+            val paymentTime = SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.getDefault()).format(Date())
+            val (bankName, bankDetails) = generateBankDetails()
+            val customerDetails = generateCustomerDetails()
+            val orderStatus = if (Random.nextBoolean()) "Оплачено ✓" else "В обработке..."
 
-        val trainNumber = generateTrainNumber()
-        val paymentTime = SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.getDefault()).format(Date())
-        val (bankName, bankDetails) = generateBankDetails()
-        val customerDetails = generateCustomerDetails()
-        val orderStatus = if (Random.nextBoolean()) "Оплачено ✓" else "В обработке..."
+            sharedPreferences.edit().apply {
+                putString(KEY_TRAIN_NUMBER, trainNumber)
+                putString(KEY_PAYMENT_TIME, paymentTime)
+                putString(KEY_BANK_NAME, bankName)
+                putString(KEY_BANK_DETAILS, bankDetails)
+                putString(KEY_CUSTOMER_DETAILS, customerDetails)
+                putString(KEY_ORDER_STATUS, orderStatus)
+                apply()
+            }
 
-
-        tvTrainNumber.text = "Поезд: $trainNumber"
-        tvPaymentTime.text = "Оплата: $paymentTime"
-        tvBankName.text = "Банк: $bankName"
-        tvBankDetails.text = "Реквизиты: $bankDetails"
-        tvCustomerDetails.text = "Покупатель:\n$customerDetails"
-        tvOrderStatus.text = "Статус: $orderStatus"
-
+            // Display new data
+            tvTrainNumber.text = "Поезд: $trainNumber"
+            tvPaymentTime.text = "Оплата: $paymentTime"
+            tvBankName.text = "Банк: $bankName"
+            tvBankDetails.text = "Реквизиты: $bankDetails"
+            tvCustomerDetails.text = "Покупатель:\n$customerDetails"
+            tvOrderStatus.text = "Статус: $orderStatus"
+        }
 
         findViewById<ImageButton>(R.id.imageButton).setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
